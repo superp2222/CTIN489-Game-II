@@ -25,6 +25,11 @@ public class ElevatorController : MonoBehaviour
     public AudioClip successSfx;
     public AudioClip stingSfx; // optional: woman enters
 
+    [Header("Music (ambient)")]
+    public AudioSource musicSource;
+    public AudioClip musicLoop;
+
+
     [Header("Prototype Settings")]
     public List<int> targetSequence = new() { 1, 4, 2, 6, 2, 10, 5, 1 };
 
@@ -52,6 +57,15 @@ public class ElevatorController : MonoBehaviour
             resetButton.onClick.AddListener(ResetRun);
         if (skipButton != null)
             skipButton.onClick.AddListener(SkipToEnd);
+
+        // Start music
+        if (musicSource != null && musicLoop != null)
+        {
+            musicSource.clip = musicLoop;
+            musicSource.loop = true;
+            musicSource.Play();
+        }
+
 
     }
 
