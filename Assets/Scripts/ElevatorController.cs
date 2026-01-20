@@ -16,6 +16,7 @@ public class ElevatorController : MonoBehaviour
     [Header("Buttons")]
     public Button[] floorButtons; // size 10, in order 1..10
     public Button resetButton;
+    public Button skipButton;
 
     [Header("Audio (responsive)")]
     public AudioSource sfxSource;
@@ -49,6 +50,9 @@ public class ElevatorController : MonoBehaviour
 
         if (resetButton != null)
             resetButton.onClick.AddListener(ResetRun);
+        if (skipButton != null)
+            skipButton.onClick.AddListener(SkipToEnd);
+
     }
 
     void Update()
@@ -81,18 +85,15 @@ public class ElevatorController : MonoBehaviour
             // Success condition
             if (index >= targetSequence.Count)
             {
-                finished = true;
-                statusText.text = "SUCCESS: Elevator misroutes to Floor 10. Dimension breach.";
-                PlayOneShot(successSfx);
-                DisableFloorButtons();
+                CompleteRun();
             }
             else
             {
                 statusText.text = $"Correct. Next input #{index + 1}...";
+                UpdateAllUI();
             }
-
-            UpdateAllUI();
             return;
+
         }
 
         // Wrong input
@@ -142,4 +143,26 @@ public class ElevatorController : MonoBehaviour
         if (clip == null || sfxSource == null) return;
         sfxSource.PlayOneShot(clip);
     }
+    public void SkipToEnd()
+    {
+        if (finished) return;
+
+        // Optional: fill input to look "complete"
+        playerInput.Clear();
+        playerInput.AddRange(targetSequence);
+        index = targetSequence.Count;
+
+        CompleteRun();
+    }
+
+    void CompleteRun()
+    {
+        finished = true;
+        statusText.text = "SUCCESS: Elevator misroutes to Floor 10. Dimension breach.";
+        PlayOneShot(successSfx);
+        DisableFloorButtons();
+        UpdateAllUI();
+    }
+
+
 }
