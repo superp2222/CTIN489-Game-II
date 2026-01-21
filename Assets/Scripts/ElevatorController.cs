@@ -71,6 +71,12 @@ public class ElevatorController : MonoBehaviour
 
     void Update()
     {
+        //escape quits app
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            QuitApplication();
+            return;
+        }
         // QOL: R reloads scene
         var kb = Keyboard.current;
         if (kb != null && kb.rKey.wasPressedThisFrame)
@@ -177,6 +183,16 @@ public class ElevatorController : MonoBehaviour
         DisableFloorButtons();
         UpdateAllUI();
     }
+
+    public void QuitApplication()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
 
 
 }
