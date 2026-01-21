@@ -39,7 +39,7 @@ public class ElevatorController : MonoBehaviour
 
     void Start()
     {
-        if (titleText != null) titleText.text = "ELEVATOR PHASE (Bad Version)";
+        if (titleText != null) titleText.text = "ELEVATOR PHASE";
         UpdateAllUI();
 
         // Wire buttons
